@@ -3,6 +3,7 @@ dist/
 .vinext/
 .wrangler/
 .next/
+out/
 .env
 .env.*
 .DS_Store
