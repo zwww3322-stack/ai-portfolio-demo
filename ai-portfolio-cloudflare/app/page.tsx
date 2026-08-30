@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 const strategyText =
   "8月8日至10日，为海川市机场和大学城的周末兼职服务者配置晚高峰保障策略，18:00–22:00完成3单奖励15元、完成5单再奖励20元，单日预算5万元。";
@@ -46,9 +47,9 @@ type MonitorStep = "idle" | "rain" | "detected" | "dispatch" | "sent";
 
 function BrandMark() {
   return (
-    <div className="brand-mark" aria-label="张唯个人AI作品集">
+    <div className="brand-mark" aria-label="阿唯inways个人网站">
       <span className="brand-symbol"><i /><i /></span>
-      <span>张唯个人AI作品集</span>
+      <span>阿唯inways个人网站</span>
     </div>
   );
 }
@@ -68,12 +69,12 @@ function DemoDataNotice() {
 function SiteHeader({ active }: { active: "home" | "supply" | "strategy" | "about" }) {
   return (
     <header className="site-header">
-      <a href="/" aria-label="返回首页"><BrandMark /></a>
+      <Link href="/" aria-label="返回首页"><BrandMark /></Link>
       <nav>
-        <a className={active === "home" ? "active" : ""} href="/">首页</a>
+        <Link className={active === "home" ? "active" : ""} href="/">首页</Link>
         <a className={active === "supply" ? "active" : ""} href="/supply">作品一 · 供需盯盘</a>
         <a className={active === "strategy" ? "active" : ""} href="/strategy">作品二 · 策略中心</a>
-        <a className={active === "about" ? "active" : ""} href="/about">关于作品集</a>
+        <a className={active === "about" ? "active" : ""} href="/about">关于网站</a>
       </nav>
       <a className="header-cta" href={active === "strategy" ? "/supply" : "/strategy"}>体验产品Demo <ArrowIcon /></a>
     </header>
@@ -163,16 +164,22 @@ function SupplyDemo() {
   const selectedGap = scenarioData.gaps[selected as keyof typeof scenarioData.gaps];
 
   useEffect(() => {
-    setSelected(scenarioConfigs[scenario].firstTarget);
-    setDrawerOpen(false);
-    setStep("rain");
     const timer = window.setTimeout(() => setStep("detected"), 1100);
     return () => window.clearTimeout(timer);
   }, [scenario, scanVersion]);
 
   const reset = () => {
+    setSelected(scenarioConfigs[scenario].firstTarget);
     setDrawerOpen(false);
+    setStep("rain");
     setScanVersion((value) => value + 1);
+  };
+
+  const selectScenario = (nextScenario: Scenario) => {
+    setScenario(nextScenario);
+    setSelected(scenarioConfigs[nextScenario].firstTarget);
+    setDrawerOpen(false);
+    setStep("rain");
   };
 
   return (
@@ -194,9 +201,9 @@ function SupplyDemo() {
           <div className="metric"><small>风险区域</small><strong>{Object.keys(scenarioData.gaps).length}</strong><em>需干预</em></div>
           <div className="scenario-picker">
             <small>模拟场景</small>
-            <button className={scenario === "normal" ? "active" : ""} onClick={() => setScenario("normal")}>工作日早峰</button>
-            <button className={scenario === "rain" ? "active" : ""} onClick={() => setScenario("rain")}>突发强降雨</button>
-            <button className={scenario === "holiday" ? "active" : ""} onClick={() => setScenario("holiday")}>节假日客流</button>
+            <button className={scenario === "normal" ? "active" : ""} onClick={() => selectScenario("normal")}>工作日早峰</button>
+            <button className={scenario === "rain" ? "active" : ""} onClick={() => selectScenario("rain")}>突发强降雨</button>
+            <button className={scenario === "holiday" ? "active" : ""} onClick={() => selectScenario("holiday")}>节假日客流</button>
           </div>
           <div className="monitor-card">
             <span className="monitor-icon">◎</span>
@@ -434,7 +441,7 @@ function HomePreview() {
 }
 
 function Footer() {
-  return <footer><BrandMark /><p>AI产品运营 · AI产品经理 · AI解决方案</p><span>Portfolio demo · 2026</span></footer>;
+  return <footer><BrandMark /><p>AI产品实践 · 数字创作 · 持续探索</p><span>Personal site · 2026</span></footer>;
 }
 
 export function HomePage() {
@@ -444,9 +451,9 @@ export function HomePage() {
 
       <section className="hero">
         <div className="hero-copy">
-          <div className="eyebrow orange-text">AI PRODUCT PRACTICE · 2026</div>
-          <h1 className="hero-statement"><span className="hero-key business-key">复杂业务</span><i>+</i><span className="hero-key ai-key">AI产品</span><small>把六年运营经验，炼成可执行的产品能力。</small></h1>
-          <p>6年出行平台运营专家｜AI产品实践者<br />目标方向：AI产品运营 · AI产品经理 · AI解决方案</p>
+          <div className="eyebrow orange-text">INWAYS · PERSONAL SITE · 2026</div>
+          <h1 className="hero-statement"><span className="hero-key business-key">复杂业务</span><i>+</i><span className="hero-key ai-key">AI产品</span><small>把复杂问题，做成可以体验的产品。</small></h1>
+          <p>记录AI产品实践、业务思考与持续探索。<br />这里展示正在生长的作品与方法。</p>
           <div className="hero-actions"><a className="primary-cta" href="/supply">体验作品一 <ArrowIcon /></a><a className="secondary-cta" href="/strategy">体验作品二</a></div>
         </div>
         <div className="hero-product">
@@ -471,7 +478,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="about-teaser"><div><span className="eyebrow">ABOUT THIS PORTFOLIO</span><h2>真实问题，虚拟数据，<br />完整呈现产品思考。</h2></div><a href="/about">了解项目方法与脱敏说明 <ArrowIcon /></a></section>
+      <section className="about-teaser"><div><span className="eyebrow">ABOUT THIS SITE</span><h2>真实问题，虚拟数据，<br />记录每一次产品实践。</h2></div><a href="/about">了解网站与项目说明 <ArrowIcon /></a></section>
       <Footer />
     </main>
   );
@@ -486,7 +493,7 @@ export function StrategyPage() {
 }
 
 export function AboutPage() {
-  return <main><SiteHeader active="about" /><section className="about-page"><div className="about-page-heading"><span className="eyebrow orange-text">ABOUT THIS PORTFOLIO</span><h1>真实问题，虚拟数据，<br /><em>完整呈现产品思考。</em></h1><p>这是张唯用于求职展示的个人AI作品集，重点呈现复杂出行业务如何被重新拆解为可执行、可校验、可复用的AI产品。</p></div><div className="capability-grid">{capabilityCards.map(([no, title, desc]) => <article key={no}><span>{no}</span><h3>{title}</h3><p>{desc}</p></article>)}</div><div className="timeline-card"><div><span>Skill原型</span><small>验证单点价值</small></div><i>→</i><div><span>用户反馈</span><small>识别复用障碍</small></div><i>→</i><div><span>App产品化</span><small>配置与自动运行</small></div><i>→</i><div><span>全链路协同</span><small>生成、质检与决策</small></div></div><section className="privacy-note"><div><h2>关于职责与脱敏</h2><p>两个项目均由本人完成业务诊断、产品方案、规则抽象、Demo开发和迭代推广。作品集公开姓名，不展示手机号、邮箱、头像及当前公司信息。</p></div><div><h2>演示数据说明</h2><p>项目源于出行运营场景的真实实践抽象重构，不包含内部系统页面、接口和真实经营数据。“海川市”、人员、人群、策略、预算及地图均为虚构内容。</p></div></section></section><Footer /></main>;
+  return <main><SiteHeader active="about" /><section className="about-page"><div className="about-page-heading"><span className="eyebrow orange-text">ABOUT THIS SITE</span><h1>真实问题，虚拟数据，<br /><em>持续记录产品思考。</em></h1><p>这里是阿唯inways个人网站，记录复杂业务如何被重新拆解为可执行、可校验、可复用的AI产品，也保存一路上的实践与思考。</p></div><div className="capability-grid">{capabilityCards.map(([no, title, desc]) => <article key={no}><span>{no}</span><h3>{title}</h3><p>{desc}</p></article>)}</div><div className="timeline-card"><div><span>Skill原型</span><small>验证单点价值</small></div><i>→</i><div><span>用户反馈</span><small>识别复用障碍</small></div><i>→</i><div><span>App产品化</span><small>配置与自动运行</small></div><i>→</i><div><span>全链路协同</span><small>生成、质检与决策</small></div></div><section className="privacy-note"><div><h2>关于本站与脱敏</h2><p>本站只保留创作主题、项目方法与实践过程，不展示真实姓名、联系方式、头像及工作单位信息。两个项目的业务诊断、产品方案、规则抽象和Demo开发均为个人实践。</p></div><div><h2>演示数据说明</h2><p>项目源于出行运营场景的真实实践抽象重构，不包含内部系统页面、接口和真实经营数据。“海川市”、人员、人群、策略、预算及地图均为虚构内容。</p></div></section></section><Footer /></main>;
 }
 
 export default HomePage;
