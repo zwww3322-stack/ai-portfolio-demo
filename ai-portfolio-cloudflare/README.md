@@ -1,4 +1,4 @@
-# 张唯个人 AI 作品集
+# 阿唯inways个人网站
 
 本项目同时支持 Cloudflare Workers 和阿里云 ECS 静态部署。
 
